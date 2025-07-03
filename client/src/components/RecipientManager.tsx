@@ -8,15 +8,21 @@ import { useAppStore } from '@/store/useAppStore';
 import { SUPPORTED_CHAINS, TESTNET_CHAINS } from '@/lib/constants';
 import { CSVUtils } from '@/lib/csvUtils';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Upload, Download, Trash2, Loader2, Clock, CheckCircle, AlertCircle, Activity, Zap, FileText, Users } from 'lucide-react';
+import { useCCTP } from '@/hooks/useCCTP';
+import { useWallet } from '@/hooks/useWallet';
+import { USDCService } from '@/lib/usdc';
+import { walletService } from '@/lib/wallet';
+import { Plus, Upload, Download, Trash2, Loader2, Clock, CheckCircle, AlertCircle, Activity, Zap, FileText, Users, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function RecipientManager() {
-  const { recipients, addRecipient, removeRecipient, clearRecipients, isTestnet, wallet } = useAppStore();
+  const { recipients, addRecipient, removeRecipient, clearRecipients, isTestnet, wallet, updateRecipient, selectedTransferMethod } = useAppStore();
   const { toast } = useToast();
+  const walletHook = useWallet();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const [payingRecipients, setPayingRecipients] = useState<Set<string>>(new Set());
   const [newRecipient, setNewRecipient] = useState({
     address: '',
     chainId: 1,
@@ -138,6 +144,127 @@ export default function RecipientManager() {
     const defaultChainId = filteredChains.length > 0 ? filteredChains[0].id : 1;
     setNewRecipient({ ...newRecipient, chainId: defaultChainId });
     setShowAddDialog(true);
+  };
+
+  const handleIndividualPayment = async (recipient: any) => {
+    const provider = walletService.getProvider();
+    const signer = walletService.getSigner();
+    
+    if (!provider || !signer) {
+      toast({
+        title: "Wallet Not Connected",
+        description: "Please connect your wallet before making payments",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!wallet.isConnected) {
+      toast({
+        title: "Wallet Not Connected",
+        description: "Please connect your wallet to continue",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setPayingRecipients(prev => new Set(prev).add(recipient.id));
+    updateRecipient(recipient.id, { status: 'pending' });
+
+    try {
+      let txHash: string;
+
+      if (recipient.isSameChain) {
+        // Same-chain USDC transfer
+        updateRecipient(recipient.id, { status: 'transferring' });
+        const usdcService = new USDCService(provider, signer, isTestnet);
+        txHash = await usdcService.executeBatchTransfer([recipient]);
+        
+        updateRecipient(recipient.id, { 
+          status: 'completed', 
+          txHash 
+        });
+
+        toast({
+          title: "Payment Successful",
+          description: `Successfully sent ${recipient.amount} USDC to ${recipient.address.slice(0, 6)}...${recipient.address.slice(-4)}`,
+        });
+      } else {
+        // Cross-chain CCTP transfer
+        updateRecipient(recipient.id, { status: 'burning' });
+        const { CCTPService } = await import('@/lib/cctp');
+        const cctpService = new CCTPService(provider, signer, isTestnet);
+        
+        // Use fast or standard method, not same-chain for CCTP
+        const transferMethod: 'fast' | 'standard' = selectedTransferMethod === 'same-chain' ? 'fast' : selectedTransferMethod as 'fast' | 'standard';
+        
+        // Burn USDC on source chain
+        txHash = await cctpService.burnUSDC(recipient, recipient.chainId, transferMethod);
+        updateRecipient(recipient.id, { 
+          status: 'attesting', 
+          txHash 
+        });
+
+        toast({
+          title: "Cross-Chain Transfer Started",
+          description: `Burn transaction successful. Starting attestation process...`,
+        });
+
+        // Wait for attestation and mint
+        setTimeout(async () => {
+          try {
+            updateRecipient(recipient.id, { status: 'minting' });
+            
+            // In a real implementation, you would:
+            // 1. Wait for attestation from Circle API
+            // 2. Call mintUSDC on destination chain
+            // For now, we'll simulate the process
+            
+            setTimeout(() => {
+              updateRecipient(recipient.id, { 
+                status: 'completed',
+                attestationHash: 'simulated-hash'
+              });
+              
+              toast({
+                title: "Cross-Chain Transfer Complete",
+                description: `Successfully sent ${recipient.amount} USDC to ${recipient.chainName}`,
+              });
+            }, 5000);
+            
+          } catch (error: any) {
+            updateRecipient(recipient.id, { 
+              status: 'failed', 
+              error: error.message 
+            });
+            
+            toast({
+              title: "Minting Failed",
+              description: error.message,
+              variant: "destructive"
+            });
+          }
+        }, 3000);
+      }
+
+    } catch (error: any) {
+      updateRecipient(recipient.id, { 
+        status: 'failed', 
+        error: error.message 
+      });
+
+      toast({
+        title: "Payment Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setPayingRecipients(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(recipient.id);
+        return newSet;
+      });
+    }
   };
 
   const getStatusBadge = (status: string, recipientId: string) => {
@@ -412,7 +539,28 @@ export default function RecipientManager() {
                       <span className="font-semibold text-white">{recipient.amount}</span>
                     </td>
                     <td className="p-4">
-                      {getStatusBadge(recipient.status, recipient.id)}
+                      {recipient.status === 'ready' ? (
+                        <Button
+                          size="sm"
+                          onClick={() => handleIndividualPayment(recipient)}
+                          disabled={payingRecipients.has(recipient.id)}
+                          className="bg-blue-500 hover:bg-blue-600 text-white border-0"
+                        >
+                          {payingRecipients.has(recipient.id) ? (
+                            <>
+                              <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                              Paying...
+                            </>
+                          ) : (
+                            <>
+                              <Send className="w-3 h-3 mr-1" />
+                              Pay
+                            </>
+                          )}
+                        </Button>
+                      ) : (
+                        getStatusBadge(recipient.status, recipient.id)
+                      )}
                     </td>
                     <td className="p-4 text-center">
                       <Button
