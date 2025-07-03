@@ -91,7 +91,9 @@ export default function TeamPay() {
             </div>
 
             {/* Recipient Manager */}
-            <RecipientManager />
+            <div className="glass-card rounded-xl shimmer">
+              <RecipientManager />
+            </div>
 
             {/* Fee Estimation and Settings Side by Side */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
