@@ -551,7 +551,7 @@ export default function RecipientManager() {
                         onClick={() => removeRecipient(recipient.id)}
                         className="text-slate-400 hover:text-red-400 hover:bg-red-500/10"
                       >
-                        <Brush className="w-4 h-4" />
+                        <Trash2 className="w-4 h-4" />
                       </Button>
                     </td>
                   </tr>
