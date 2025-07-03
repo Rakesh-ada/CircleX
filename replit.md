@@ -159,6 +159,8 @@ Changelog:
   • Improved font size alignment in PaymentSummary component for better visual hierarchy
   • Replaced brush icon with dust bin (Trash2) icon for delete buttons in RecipientManager
   • Enhanced CSV functionality to automatically generate transaction links for completed transfers
+  • Updated fee estimation display from dollars ($) to Gwei for better blockchain accuracy
+  • Changed fee estimation icon from DollarSign to Zap for more appropriate gas fee representation
 ```
 
 ## User Preferences

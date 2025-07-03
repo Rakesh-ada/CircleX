@@ -70,28 +70,40 @@ export function useFeeEstimation() {
 
       const total = totalNetworkFees + totalCctpFees;
 
+      // Convert dollar amounts to Gwei (assuming reasonable ETH price for estimation)
+      // Using rough conversion: $1 ≈ 0.5 Gwei (this is approximate for display)
+      const ethPriceEstimate = 3000; // Rough ETH price in USD
+      const gweiPerEth = 1e9;
+      const dollarToGwei = gweiPerEth / ethPriceEstimate;
+      
+      const networkFeesGwei = Math.round(totalNetworkFees * dollarToGwei);
+      const cctpFeesGwei = Math.round(totalCctpFees * dollarToGwei);
+      const totalGwei = networkFeesGwei + cctpFeesGwei;
+
       setFeeEstimation({
-        networkFees: `~$${totalNetworkFees.toFixed(2)}`,
-        cctpFees: `~$${totalCctpFees.toFixed(2)}`,
-        total: `~$${total.toFixed(2)}`
+        networkFees: `~${networkFeesGwei.toLocaleString()} Gwei`,
+        cctpFees: `~${cctpFeesGwei.toLocaleString()} Gwei`,
+        total: `~${totalGwei.toLocaleString()} Gwei`
       });
 
     } catch (error) {
       console.error('Fee calculation failed:', error);
       
-      // Set fallback fees based on transfer counts
-      const fastFeePerTransfer = 5;
-      const networkFeePerTransfer = 2;
+      // Set fallback fees based on transfer counts in Gwei
+      const fastFeePerTransferGwei = 1000000; // ~1M Gwei per fast transfer
+      const networkFeePerTransferGwei = 500000; // ~500K Gwei per network fee
       
-      const fallbackNetworkFees = recipients.length * networkFeePerTransfer;
-      const fallbackCctpFees = selectedTransferMethod === 'fast' 
-        ? recipients.filter(r => !r.isSameChain).length * fastFeePerTransfer 
+      const fallbackNetworkFeesGwei = recipients.length * networkFeePerTransferGwei;
+      const fallbackCctpFeesGwei = selectedTransferMethod === 'fast' 
+        ? recipients.filter(r => !r.isSameChain).length * fastFeePerTransferGwei 
         : 0;
       
+      const totalFallbackGwei = fallbackNetworkFeesGwei + fallbackCctpFeesGwei;
+      
       setFeeEstimation({
-        networkFees: `~$${fallbackNetworkFees.toFixed(2)}`,
-        cctpFees: `~$${fallbackCctpFees.toFixed(2)}`,
-        total: `~$${(fallbackNetworkFees + fallbackCctpFees).toFixed(2)}`
+        networkFees: `~${fallbackNetworkFeesGwei.toLocaleString()} Gwei`,
+        cctpFees: `~${fallbackCctpFeesGwei.toLocaleString()} Gwei`,
+        total: `~${totalFallbackGwei.toLocaleString()} Gwei`
       });
     }
   }, [recipients, selectedTransferMethod, wallet.isConnected, wallet.chainId, isTestnet, setFeeEstimation]);
