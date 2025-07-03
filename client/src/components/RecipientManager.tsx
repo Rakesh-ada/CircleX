@@ -520,7 +520,6 @@ export default function RecipientManager() {
                     </td>
                     <td className="p-4">
                       <div className="flex items-center space-x-2">
-                        <div className={cn("w-4 h-4 rounded-full", getChainColor(recipient.chainName))}></div>
                         <div className="flex flex-col">
                           <span className="text-sm text-white">{recipient.chainName}</span>
                           {recipient.isSameChain ? (
