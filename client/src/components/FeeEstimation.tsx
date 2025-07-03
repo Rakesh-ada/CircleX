@@ -1,47 +1,41 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAppStore } from '@/store/useAppStore';
+import { DollarSign } from 'lucide-react';
 
 export default function FeeEstimation() {
-  const { feeEstimation } = useAppStore();
-
-  if (!feeEstimation) {
-    return (
-      <Card className="bg-slate-800 border-slate-700">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">Fee Estimation</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center text-slate-400">
-            <p className="text-sm">Add recipients to see fee estimation</p>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+  const { feeEstimation, recipients } = useAppStore();
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold text-white">Fee Estimation</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
+    <div className="p-6 h-full">
+      <div className="mb-6">
+        <h2 className="text-xl font-bold text-gradient mb-2 flex items-center space-x-2">
+          <DollarSign className="w-5 h-5" />
+          <span>Fee Estimation</span>
+        </h2>
+        <p className="text-slate-400 text-sm">Estimated costs for your transfers</p>
+      </div>
+
+      {!feeEstimation || recipients.length === 0 ? (
+        <div className="text-center text-slate-400 py-8">
+          <p className="text-sm">Add recipients to see fee estimation</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          <div className="flex justify-between items-center py-2">
             <span className="text-slate-300">Network Fees</span>
             <span className="font-medium text-white">{feeEstimation.networkFees}</span>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center py-2">
             <span className="text-slate-300">CCTP Transfer Fees</span>
             <span className="font-medium text-white">{feeEstimation.cctpFees}</span>
           </div>
-          <div className="border-t border-slate-700 pt-3">
+          <div className="border-t border-slate-700/50 pt-4">
             <div className="flex justify-between items-center">
               <span className="font-medium text-white">Total Estimated</span>
-              <span className="font-semibold text-lg text-white">{feeEstimation.total}</span>
+              <span className="font-semibold text-lg text-gradient">{feeEstimation.total}</span>
             </div>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      )}
+    </div>
   );
 }
