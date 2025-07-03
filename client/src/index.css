@@ -217,13 +217,13 @@
       linear-gradient(135deg, rgba(15, 23, 42, 1) 0%, rgba(30, 41, 59, 1) 100%);
   }
   
-  /* Remove floating animation */
+  /* Floating Animation */
   .floating-animation {
-    /* No animation */
+    animation: float 6s ease-in-out infinite;
   }
   
   .floating-animation-delayed {
-    /* No animation */
+    animation: float 6s ease-in-out infinite 2s;
   }
   
   /* Remove glow effects */
@@ -247,6 +247,12 @@
   
   .shimmer::before {
     display: none;
+  }
+  
+  /* Animations */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
   }
   
   /* Scale hover effects */
