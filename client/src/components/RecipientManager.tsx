@@ -12,7 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useWallet } from '@/hooks/useWallet';
 import { USDCService } from '@/lib/usdc';
 import { walletService } from '@/lib/wallet';
-import { Plus, Upload, Download, Trash2, Loader2, Clock, CheckCircle, AlertCircle, Activity, Zap, FileText, Users, Send } from 'lucide-react';
+import { Plus, Upload, Download, Trash2, Loader2, Clock, CheckCircle, AlertCircle, Activity, Zap, FileText, Users, Send, Brush } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function RecipientManager() {
@@ -510,24 +510,18 @@ export default function RecipientManager() {
                 {recipients.map((recipient) => (
                   <tr key={recipient.id} className="border-b border-slate-700/50 hover:bg-slate-800/30">
                     <td className="p-4">
-                      <div className="flex items-center space-x-3">
-                        <div>
-                          <div className="font-mono text-sm text-white">
-                            {recipient.address.slice(0, 20)}...
-                          </div>
-                        </div>
+                      <div className="font-mono text-sm text-white">
+                        {recipient.address.slice(0, 20)}...
                       </div>
                     </td>
                     <td className="p-4">
-                      <div className="flex items-center space-x-2">
-                        <div className="flex flex-col">
-                          <span className="text-sm text-white">{recipient.chainName}</span>
-                          {recipient.isSameChain ? (
-                            <span className="text-xs text-cyan-400">Same-Chain</span>
-                          ) : (
-                            <span className="text-xs text-purple-400">Cross-Chain</span>
-                          )}
-                        </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm text-white">{recipient.chainName}</span>
+                        {recipient.isSameChain ? (
+                          <span className="text-xs text-cyan-400">Same-Chain</span>
+                        ) : (
+                          <span className="text-xs text-purple-400">Cross-Chain</span>
+                        )}
                       </div>
                     </td>
                     <td className="p-4">
@@ -564,7 +558,7 @@ export default function RecipientManager() {
                         onClick={() => removeRecipient(recipient.id)}
                         className="text-slate-400 hover:text-red-400 hover:bg-red-500/10"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Brush className="w-4 h-4" />
                       </Button>
                     </td>
                   </tr>

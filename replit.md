@@ -144,6 +144,8 @@ Changelog:
   • Removed System Status and Live Feed components for cleaner interface
   • Positioned Fee Estimation and Settings side-by-side under Recipients section
   • Fixed RecipientManager wrapper div removal and added proper glass-card styling for visible borders
+  • Removed avatar logos and chain color indicators from recipient table for cleaner design
+  • Replaced dustbin (Trash2) icon with brush icon for delete actions
 ```
 
 ## User Preferences
