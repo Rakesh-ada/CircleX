@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useAppStore } from '@/store/useAppStore';
 import { useWallet } from '@/hooks/useWallet';
@@ -115,8 +115,8 @@ export default function SystemStatus() {
 
   return (
     <Card className="bg-slate-800 border-slate-700">
-      <CardHeader>
-        <div className="flex items-center justify-between">
+      <CardContent>
+        <div className="flex items-center justify-between mb-6">
           <CardTitle className="text-lg font-semibold text-white flex items-center space-x-2">
             <Database className="w-5 h-5" />
             <span>System Status</span>
@@ -127,9 +127,7 @@ export default function SystemStatus() {
               Uptime: {formatUptime(uptime)}
             </span>
           </div>
-        </div>
-      </CardHeader>
-      <CardContent>
+        </div></CardContent>
         <div className="grid grid-cols-1 gap-4">
           {metrics.map((metric) => (
             <div
