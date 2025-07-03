@@ -95,16 +95,6 @@ export default function TeamPay() {
               <RecipientManager />
             </div>
 
-
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Payment Summary */}
-            <div className="glass-card rounded-xl shimmer">
-              <PaymentSummary />
-            </div>
-
             {/* Fee Estimation and Settings Side by Side */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Fee Estimation */}
@@ -116,6 +106,14 @@ export default function TeamPay() {
               <div className="glass-card rounded-xl shimmer">
                 <SettingsPanel />
               </div>
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Payment Summary */}
+            <div className="glass-card rounded-xl shimmer">
+              <PaymentSummary />
             </div>
 
             {/* Balance Display */}
