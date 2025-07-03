@@ -1,4 +1,4 @@
-import { ethers, BrowserProvider, Contract, parseUnits, formatEther } from 'ethers';
+import { ethers, BrowserProvider, Contract, parseUnits, formatEther, formatUnits } from 'ethers';
 import { CCTP_V2_CONTRACTS, CCTP_V2_TESTNET_CONTRACTS, SUPPORTED_CHAINS, TESTNET_CHAINS } from './constants';
 import { Recipient } from '@/types';
 
@@ -456,14 +456,13 @@ export class CCTPService {
   }> {
     try {
       // Check if provider is still valid before making calls
-      let networkFeesUSD = 15; // Default fallback
+      let networkFeesGwei = '20'; // Default fallback
       try {
         const feeData = await this.provider.getFeeData();
         const gasPrice = feeData.gasPrice || parseUnits('20', 'gwei');
-        const estimatedGas = recipients.length * 150000; // Gas per transfer
         
-        const networkFees = gasPrice * BigInt(estimatedGas);
-        networkFeesUSD = Number(formatEther(networkFees)) * 2000; // Assume ETH = $2000
+        // Convert gas price to Gwei for display
+        networkFeesGwei = formatUnits(gasPrice, 'gwei');
       } catch (networkError: any) {
         // Handle network change errors gracefully
         if (networkError.code === 'NETWORK_ERROR' || networkError.event === 'changed') {
