@@ -136,6 +136,13 @@ Changelog:
   • Removed "Execute Bridge Transfer" button from main interface
   • Deleted useCCTP hook and all transfer execution logic
   • Application now focuses on configuration and management without execution
+- July 03, 2025: Updated UI components to glassmorphic design:
+  • Converted RecipientManager to glassmorphic styling with modern header design
+  • Updated FeeEstimation component with proper height and gradient styling
+  • Enhanced SettingsPanel with consistent glassmorphic design and descriptions
+  • Redesigned pay buttons with glassmorphic emerald styling
+  • Removed System Status and Live Feed components for cleaner interface
+  • Positioned Fee Estimation and Settings side-by-side under Recipients section
 ```
 
 ## User Preferences

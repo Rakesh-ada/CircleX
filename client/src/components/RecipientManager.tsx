@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -8,7 +8,7 @@ import { useAppStore } from '@/store/useAppStore';
 import { SUPPORTED_CHAINS, TESTNET_CHAINS } from '@/lib/constants';
 import { CSVUtils } from '@/lib/csvUtils';
 import { useToast } from '@/hooks/use-toast';
-import { useCCTP } from '@/hooks/useCCTP';
+
 import { useWallet } from '@/hooks/useWallet';
 import { USDCService } from '@/lib/usdc';
 import { walletService } from '@/lib/wallet';
@@ -368,135 +368,132 @@ export default function RecipientManager() {
         className="hidden"
       />
 
-      <Card className="border-none bg-transparent shadow-none">
-        <CardHeader className="p-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Users className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <CardTitle className="text-xl font-bold text-white">Team Recipients</CardTitle>
-                
-              </div>
+      <div className="p-6">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 mb-6">
+          <div className="flex items-center space-x-3">
+            <div className="w-12 h-12 glass-card rounded-xl flex items-center justify-center">
+              <Users className="w-6 h-6 text-gradient" />
             </div>
-            
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isImporting}
-                className="text-white border-white/20 hover:border-white/30"
-              >
-                {isImporting ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                  <Upload className="w-4 h-4 mr-2" />
-                )}
-                Import CSV
-              </Button>
-              
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleCSVExport}
-                disabled={recipients.length === 0}
-                className="text-white border-white/20 hover:border-white/30"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                Export CSV
-              </Button>
-
-              {recipients.length > 0 && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={clearRecipients}
-                  className="text-red-400 border-red-400/20 hover:border-red-400/30"
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Clear All
-                </Button>
-              )}
-
-              <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-                <DialogTrigger asChild>
-                  <Button 
-                    size="sm"
-                    className="text-white border-cyan-400/30 hover:border-cyan-400/50 bg-cyan-400/10 hover:bg-cyan-400/20"
-                    onClick={handleOpenDialog}
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Recipient
-                  </Button>
-                </DialogTrigger>
-                  <DialogContent className="bg-gray-800 border-gray-700">
-                    <DialogHeader>
-                      <DialogTitle className="text-white">Add New Recipient</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      {wallet.isConnected && filteredChains.length < availableChains.length && (
-                        <div className="p-3 bg-yellow-900/20 border border-yellow-700/30 rounded-lg">
-                          <p className="text-sm text-yellow-400">
-                            <strong>Note:</strong> Only showing chains with different CCTP domains than your current connected chain. 
-                            CCTP doesn't support transfers within the same domain.
-                          </p>
-                        </div>
-                      )}
-                      <div>
-                        <label className="text-sm font-medium text-gray-300">Address</label>
-                        <Input
-                          value={newRecipient.address}
-                          onChange={(e) => setNewRecipient({ ...newRecipient, address: e.target.value })}
-                          placeholder="0x..."
-                          className="bg-gray-700 border-gray-600 text-white"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium text-gray-300">Chain</label>
-                        <Select
-                          value={newRecipient.chainId.toString()}
-                          onValueChange={(value) => setNewRecipient({ ...newRecipient, chainId: parseInt(value) })}
-                        >
-                          <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="bg-slate-700 border-slate-600">
-                            {filteredChains.map((chain) => (
-                              <SelectItem key={chain.id} value={chain.id.toString()}>
-                                {chain.name}
-                              </SelectItem>
-                            ))}
-                            {filteredChains.length === 0 && (
-                              <div className="p-3 text-sm text-slate-400 text-center">
-                                No destination chains available. Please connect to a different source chain.
-                              </div>
-                            )}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium text-slate-300">Amount (USDC)</label>
-                        <Input
-                          value={newRecipient.amount}
-                          onChange={(e) => setNewRecipient({ ...newRecipient, amount: e.target.value })}
-                          placeholder="100.00"
-                          type="number"
-                          step="0.01"
-                          className="bg-slate-700 border-slate-600 text-white"
-                        />
-                      </div>
-                      <Button onClick={handleAddRecipient} className="w-full bg-blue-500 hover:bg-blue-600">
-                        Add Recipient
-                      </Button>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+            <div>
+              <h2 className="text-xl font-bold text-gradient">Team Recipients</h2>
+              <p className="text-slate-400 text-sm">Manage your payment recipients</p>
             </div>
           </div>
-        </CardHeader>
-      <CardContent className="p-0">
+            
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isImporting}
+              className="glass-button text-white font-medium"
+            >
+              {isImporting ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Upload className="w-4 h-4 mr-2" />
+              )}
+              Import CSV
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleCSVExport}
+              disabled={recipients.length === 0}
+              className="glass-button text-white font-medium"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Export CSV
+            </Button>
+
+            {recipients.length > 0 && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={clearRecipients}
+                className="glass-button text-red-400 font-medium hover:text-red-300"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Clear All
+              </Button>
+            )}
+
+            <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+              <DialogTrigger asChild>
+                <Button 
+                  size="sm"
+                  className="glass-button text-white font-medium bg-cyan-400/20 hover:bg-cyan-400/30"
+                  onClick={handleOpenDialog}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Recipient
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="glass-card border-slate-600/50">
+                <DialogHeader>
+                  <DialogTitle className="text-gradient">Add New Recipient</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  {wallet.isConnected && filteredChains.length < availableChains.length && (
+                    <div className="p-3 bg-yellow-900/20 border border-yellow-700/30 rounded-lg">
+                      <p className="text-sm text-yellow-400">
+                        <strong>Note:</strong> Only showing chains with different CCTP domains than your current connected chain. 
+                        CCTP doesn't support transfers within the same domain.
+                      </p>
+                    </div>
+                  )}
+                  <div>
+                    <label className="text-sm font-medium text-slate-300">Address</label>
+                    <Input
+                      value={newRecipient.address}
+                      onChange={(e) => setNewRecipient({ ...newRecipient, address: e.target.value })}
+                      placeholder="0x..."
+                      className="glass-input text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-slate-300">Chain</label>
+                    <Select
+                      value={newRecipient.chainId.toString()}
+                      onValueChange={(value) => setNewRecipient({ ...newRecipient, chainId: parseInt(value) })}
+                    >
+                      <SelectTrigger className="glass-input text-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="glass-card border-slate-600">
+                        {filteredChains.map((chain) => (
+                          <SelectItem key={chain.id} value={chain.id.toString()}>
+                            {chain.name}
+                          </SelectItem>
+                        ))}
+                        {filteredChains.length === 0 && (
+                          <div className="p-3 text-sm text-slate-400 text-center">
+                            No destination chains available. Please connect to a different source chain.
+                          </div>
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-slate-300">Amount (USDC)</label>
+                    <Input
+                      value={newRecipient.amount}
+                      onChange={(e) => setNewRecipient({ ...newRecipient, amount: e.target.value })}
+                      placeholder="100.00"
+                      type="number"
+                      step="0.01"
+                      className="glass-input text-white"
+                    />
+                  </div>
+                  <Button onClick={handleAddRecipient} className="w-full glass-button text-white font-medium">
+                    Add Recipient
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </div>
         {recipients.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -544,7 +541,7 @@ export default function RecipientManager() {
                           size="sm"
                           onClick={() => handleIndividualPayment(recipient)}
                           disabled={payingRecipients.has(recipient.id)}
-                          className="bg-blue-500 hover:bg-blue-600 text-white border-0"
+                          className="glass-button text-white font-medium bg-emerald-500/20 hover:bg-emerald-500/30 border-emerald-500/30"
                         >
                           {payingRecipients.has(recipient.id) ? (
                             <>
@@ -583,8 +580,7 @@ export default function RecipientManager() {
             <p className="text-sm">Add recipients manually or import from CSV</p>
           </div>
         )}
-        </CardContent>
-      </Card>
+      </div>
     </>
   );
 }
