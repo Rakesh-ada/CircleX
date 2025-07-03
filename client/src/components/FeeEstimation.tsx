@@ -1,8 +1,12 @@
 import { useAppStore } from '@/store/useAppStore';
+import { useFeeEstimation } from '@/hooks/useFeeEstimation';
 import { DollarSign } from 'lucide-react';
 
 export default function FeeEstimation() {
   const { feeEstimation, recipients } = useAppStore();
+  
+  // This hook will automatically calculate fees when recipients or settings change
+  useFeeEstimation();
 
   return (
     <div className="p-6 h-full">

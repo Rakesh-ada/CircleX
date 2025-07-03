@@ -31,7 +31,7 @@ interface AppState {
   
   // Fee estimation
   feeEstimation: FeeEstimation | null;
-  setFeeEstimation: (fees: FeeEstimation) => void;
+  setFeeEstimation: (fees: FeeEstimation | null) => void;
 }
 
 export const useAppStore = create<AppState>()(
