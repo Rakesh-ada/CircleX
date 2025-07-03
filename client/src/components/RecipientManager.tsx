@@ -393,7 +393,7 @@ export default function RecipientManager() {
               ) : (
                 <Upload className="w-4 h-4 mr-2" />
               )}
-              Import CSV
+              Import
             </Button>
             
             <Button
@@ -404,7 +404,7 @@ export default function RecipientManager() {
               className="glass-button text-white font-medium"
             >
               <Download className="w-4 h-4 mr-2" />
-              Export CSV
+              Export
             </Button>
 
             {recipients.length > 0 && (
@@ -415,7 +415,7 @@ export default function RecipientManager() {
                 className="glass-button text-red-400 font-medium hover:text-red-300"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                Clear All
+                Delete All
               </Button>
             )}
 
