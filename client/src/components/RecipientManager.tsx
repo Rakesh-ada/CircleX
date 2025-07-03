@@ -368,7 +368,7 @@ export default function RecipientManager() {
         className="hidden"
       />
 
-      <div className="p-6">
+      <div className="glass-card rounded-xl shimmer p-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 mb-6">
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 glass-card rounded-xl flex items-center justify-center">

@@ -143,6 +143,7 @@ Changelog:
   • Redesigned pay buttons with glassmorphic emerald styling
   • Removed System Status and Live Feed components for cleaner interface
   • Positioned Fee Estimation and Settings side-by-side under Recipients section
+  • Fixed RecipientManager wrapper div removal and added proper glass-card styling for visible borders
 ```
 
 ## User Preferences
