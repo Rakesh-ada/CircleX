@@ -1,6 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAppStore } from '@/store/useAppStore';
-import { SUPPORTED_CHAINS } from '@/lib/constants';
+import { Users, DollarSign, TrendingUp } from 'lucide-react';
 
 export default function PaymentSummary() {
   const { recipients } = useAppStore();
@@ -23,50 +22,72 @@ export default function PaymentSummary() {
 
   const getChainColor = (chainName: string) => {
     const colors = {
-      'Ethereum': 'bg-red-500',
-      'Polygon': 'bg-purple-500',
-      'Arbitrum': 'bg-blue-500',
-      'Base': 'bg-blue-600',
-      'OP Mainnet': 'bg-red-600',
-      'Avalanche': 'bg-red-500'
+      'Ethereum': 'from-blue-400 to-blue-600',
+      'Polygon': 'from-purple-400 to-purple-600',
+      'Arbitrum': 'from-blue-500 to-cyan-500',
+      'Base': 'from-blue-600 to-indigo-600',
+      'OP Mainnet': 'from-red-400 to-red-600',
+      'Avalanche': 'from-red-500 to-orange-500'
     };
-    return colors[chainName as keyof typeof colors] || 'bg-gray-500';
+    return colors[chainName as keyof typeof colors] || 'from-gray-400 to-gray-600';
   };
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold text-white">Payment Summary</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <span className="text-slate-300">Total Recipients</span>
-            <span className="font-semibold text-white">{recipients.length}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-slate-300">Total Amount</span>
-            <span className="font-semibold text-lg text-white">{totalAmount.toFixed(2)} USDC</span>
-          </div>
-          
-          {chainBreakdown.length > 0 && (
-            <div className="border-t border-slate-700 pt-4">
-              <h3 className="font-medium mb-2 text-white">Breakdown by Chain</h3>
-              <div className="space-y-2">
-                {chainBreakdown.map((item) => (
-                  <div key={item.chainId} className="flex justify-between text-sm">
-                    <div className="flex items-center space-x-2">
-                      <div className={`w-3 h-3 rounded-full ${getChainColor(item.chainName)}`}></div>
-                      <span className="text-slate-300">{item.chainName}</span>
-                    </div>
-                    <span className="text-white">{item.amount.toFixed(2)} USDC</span>
-                  </div>
-                ))}
+    <div className="p-6">
+      <div className="mb-6">
+        <h2 className="text-xl font-bold text-gradient mb-2">Transfer Summary</h2>
+        <p className="text-slate-400 text-sm">Review your transfer details</p>
+      </div>
+
+      <div className="space-y-4">
+        {/* Summary Cards */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="glass-input rounded-xl p-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                <Users className="w-5 h-5 text-blue-400" />
+              </div>
+              <div>
+                <p className="text-slate-400 text-sm">Recipients</p>
+                <p className="text-white font-bold text-lg">{recipients.length}</p>
               </div>
             </div>
-          )}
+          </div>
+          
+          <div className="glass-input rounded-xl p-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
+                <DollarSign className="w-5 h-5 text-green-400" />
+              </div>
+              <div>
+                <p className="text-slate-400 text-sm">Total</p>
+                <p className="text-white font-bold text-lg">{totalAmount.toFixed(2)} USDC</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </CardContent>
-    </Card>
+        
+        {/* Chain Breakdown */}
+        {chainBreakdown.length > 0 && (
+          <div className="glass-input rounded-xl p-4">
+            <div className="flex items-center space-x-2 mb-4">
+              <TrendingUp className="w-4 h-4 text-slate-400" />
+              <h3 className="font-semibold text-white">Chain Breakdown</h3>
+            </div>
+            <div className="space-y-3">
+              {chainBreakdown.map((item) => (
+                <div key={item.chainId} className="flex justify-between items-center">
+                  <div className="flex items-center space-x-3">
+                    <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${getChainColor(item.chainName)}`}></div>
+                    <span className="text-slate-300 text-sm font-medium">{item.chainName}</span>
+                  </div>
+                  <span className="text-white font-semibold">{item.amount.toFixed(2)} USDC</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
