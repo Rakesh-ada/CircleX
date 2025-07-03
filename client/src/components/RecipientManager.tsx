@@ -376,7 +376,6 @@ export default function RecipientManager() {
             </div>
             <div>
               <h2 className="text-xl font-bold text-gradient">Team Recipients</h2>
-              <p className="text-slate-400 text-sm">Manage your payment recipients</p>
             </div>
           </div>
             
