@@ -7,8 +7,6 @@ import PaymentSummary from '@/components/PaymentSummary';
 import FeeEstimation from '@/components/FeeEstimation';
 import BalanceDisplay from '@/components/BalanceDisplay';
 import SettingsPanel from '@/components/SettingsPanel';
-import LiveFeed from '@/components/LiveFeed';
-import SystemStatus from '@/components/SystemStatus';
 import { useAppStore } from '@/store/useAppStore';
 import { AlertTriangle } from 'lucide-react';
 
@@ -97,10 +95,7 @@ export default function TeamPay() {
               <RecipientManager />
             </div>
 
-            {/* System Status */}
-            <div className="glass-card rounded-xl shimmer">
-              <SystemStatus />
-            </div>
+
           </div>
 
           {/* Sidebar */}
@@ -127,10 +122,7 @@ export default function TeamPay() {
               <SettingsPanel />
             </div>
 
-            {/* Live Feed */}
-            <div className="glass-card rounded-xl shimmer">
-              <LiveFeed />
-            </div>
+
           </div>
         </div>
       </main>
