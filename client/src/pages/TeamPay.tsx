@@ -63,7 +63,7 @@ export default function TeamPay() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 glass-card rounded-xl flex items-center justify-center glow-pulse">
+              <div className="w-12 h-12 glass-card rounded-xl flex items-center justify-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-gradient">
                   <path 
                     d="M12 2L20 7V17L12 22L4 17V7L12 2Z" 
