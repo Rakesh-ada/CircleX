@@ -146,6 +146,7 @@ Changelog:
   • Fixed RecipientManager wrapper div removal and added proper glass-card styling for visible borders
   • Removed avatar logos and chain color indicators from recipient table for cleaner design
   • Replaced dustbin (Trash2) icon with brush icon for delete actions
+  • Updated Pay button to show only Send icon without text for cleaner design
 ```
 
 ## User Preferences

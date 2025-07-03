@@ -536,15 +536,9 @@ export default function RecipientManager() {
                           className="glass-button text-white font-medium bg-emerald-500/20 hover:bg-emerald-500/30 border-emerald-500/30"
                         >
                           {payingRecipients.has(recipient.id) ? (
-                            <>
-                              <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                              Paying...
-                            </>
+                            <Loader2 className="w-4 h-4 animate-spin" />
                           ) : (
-                            <>
-                              <Send className="w-3 h-3 mr-1" />
-                              Pay
-                            </>
+                            <Send className="w-4 h-4" />
                           )}
                         </Button>
                       ) : (
