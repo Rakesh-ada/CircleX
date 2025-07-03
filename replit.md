@@ -154,6 +154,11 @@ Changelog:
   • Preserved button hover effects and glow
   • Restored gradient text effects
   • Removed only the annoying shimmer effect while keeping all other glass aesthetic elements
+- July 03, 2025: Enhanced CSV export and UI improvements:
+  • Added transaction link column to CSV exports with Etherscan/block explorer URLs
+  • Improved font size alignment in PaymentSummary component for better visual hierarchy
+  • Replaced brush icon with dust bin (Trash2) icon for delete buttons in RecipientManager
+  • Enhanced CSV functionality to automatically generate transaction links for completed transfers
 ```
 
 ## User Preferences

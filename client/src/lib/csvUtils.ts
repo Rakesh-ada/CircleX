@@ -9,18 +9,38 @@ interface CSVRecipient {
 
 export class CSVUtils {
   static exportToCSV(recipients: Recipient[]): string {
-    const headers = ['Address', 'Chain', 'Amount (USDC)', 'Status'];
+    const headers = ['Address', 'Chain', 'Amount (USDC)', 'Status', 'Transaction Link'];
     const csvContent = [
       headers.join(','),
-      ...recipients.map(recipient => [
-        recipient.address,
-        recipient.chainName,
-        recipient.amount,
-        recipient.status
-      ].join(','))
+      ...recipients.map(recipient => {
+        const transactionLink = CSVUtils.getTransactionLink(recipient);
+        return [
+          recipient.address,
+          recipient.chainName,
+          recipient.amount,
+          recipient.status,
+          transactionLink
+        ].join(',');
+      })
     ].join('\n');
     
     return csvContent;
+  }
+
+  static getTransactionLink(recipient: Recipient): string {
+    if (!recipient.txHash) {
+      return '';
+    }
+
+    // Get the appropriate chain info
+    const allChains = [...SUPPORTED_CHAINS, ...TESTNET_CHAINS];
+    const chain = allChains.find(c => c.id === recipient.chainId);
+    
+    if (!chain) {
+      return recipient.txHash;
+    }
+
+    return `${chain.blockExplorer}/tx/${recipient.txHash}`;
   }
 
   static downloadCSV(recipients: Recipient[], filename: string = 'team-pay-recipients.csv'): void {
