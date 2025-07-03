@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from 'react';
+
 import WalletConnect from '@/components/WalletConnect';
 import TransferMethodSelector from '@/components/TransferMethodSelector';
 import RecipientManager from '@/components/RecipientManager';
@@ -9,40 +9,11 @@ import BalanceDisplay from '@/components/BalanceDisplay';
 import SettingsPanel from '@/components/SettingsPanel';
 import LiveFeed from '@/components/LiveFeed';
 import SystemStatus from '@/components/SystemStatus';
-import { Button } from '@/components/ui/button';
 import { useAppStore } from '@/store/useAppStore';
-import { useCCTP } from '@/hooks/useCCTP';
-import { NotebookPen, AlertTriangle, Users, Zap } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 
 export default function TeamPay() {
-  const { recipients, wallet, isTestnet, selectedTransferMethod } = useAppStore();
-  const { executeBulkTransfer, isExecuting, estimateFees } = useCCTP();
-  const debounceTimer = useRef<NodeJS.Timeout>();
-
-  // Debounced fee estimation to avoid rapid calls during network changes
-  const debouncedEstimateFees = useCallback(() => {
-    if (debounceTimer.current) {
-      clearTimeout(debounceTimer.current);
-    }
-    
-    debounceTimer.current = setTimeout(() => {
-      if (recipients.length > 0 && wallet.isConnected && wallet.chainId) {
-        estimateFees();
-      }
-    }, 1000);
-  }, [recipients, wallet.isConnected, wallet.chainId, selectedTransferMethod, estimateFees]);
-
-  useEffect(() => {
-    debouncedEstimateFees();
-    
-    return () => {
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current);
-      }
-    };
-  }, [debouncedEstimateFees]);
-
-  const canExecute = wallet.isConnected && recipients.length > 0 && recipients.some(r => r.status === 'ready');
+  const { recipients, wallet, isTestnet } = useAppStore();
 
   // Check for network compatibility issues
   const isMainnet = wallet.chainId === 1 || wallet.chainId === 137 || wallet.chainId === 42161 || wallet.chainId === 8453 || wallet.chainId === 10 || wallet.chainId === 43114;
@@ -149,31 +120,7 @@ export default function TeamPay() {
               <BalanceDisplay />
             </div>
             
-            {/* Execute Button */}
-            <div className="glass-card rounded-xl p-6 glow-border">
-              <Button
-                className="w-full glass-button text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
-                onClick={executeBulkTransfer}
-                disabled={!canExecute || isExecuting}
-              >
-                {isExecuting ? (
-                  <>
-                    <div className="w-5 h-5 mr-2 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Processing...
-                  </>
-                ) : (
-                  <>
-                    <Zap className="w-5 h-5 mr-2" />
-                    Execute Bridge Transfer
-                  </>
-                )}
-              </Button>
-              {recipients.length > 0 && (
-                <p className="text-center text-slate-400 text-sm mt-3">
-                  {recipients.length} recipients • {recipients.reduce((sum, r) => sum + parseFloat(r.amount || '0'), 0).toFixed(2)} USDC
-                </p>
-              )}
-            </div>
+
 
             {/* Settings Panel */}
             <div className="glass-card rounded-xl shimmer">
