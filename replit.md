@@ -147,6 +147,13 @@ Changelog:
   • Removed avatar logos and chain color indicators from recipient table for cleaner design
   • Replaced dustbin (Trash2) icon with brush icon for delete actions
   • Updated Pay button to show only Send icon without text for cleaner design
+- July 03, 2025: Removed glassmorphic effects and simplified UI:
+  • Removed all backdrop blur effects and transparency layers
+  • Replaced glassmorphic cards with solid dark backgrounds
+  • Removed shimmer animations and floating effects
+  • Simplified button hover effects without glow
+  • Converted gradient text to solid blue color
+  • Removed all glassy shiny effects for cleaner, more professional look
 ```
 
 ## User Preferences
