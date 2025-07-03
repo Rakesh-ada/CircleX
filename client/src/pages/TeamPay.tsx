@@ -26,7 +26,6 @@ export default function TeamPay() {
         <div className="absolute top-40 right-20 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl floating-animation-delayed"></div>
         <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-pink-500/5 rounded-full blur-3xl floating-animation"></div>
       </div>
-
       {/* Header */}
       <header className="glass-header sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,7 +55,7 @@ export default function TeamPay() {
                 </svg>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gradient">TokenBridge</h1>
+                <h1 className="text-2xl font-bold text-gradient">CircleX</h1>
                 <p className="text-slate-400 text-sm">Cross-Chain Token Swap & Bridge</p>
               </div>
             </div>
