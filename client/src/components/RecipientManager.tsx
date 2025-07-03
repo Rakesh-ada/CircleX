@@ -511,7 +511,6 @@ export default function RecipientManager() {
                   <tr key={recipient.id} className="border-b border-slate-700/50 hover:bg-slate-800/30">
                     <td className="p-4">
                       <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex-shrink-0"></div>
                         <div>
                           <div className="font-mono text-sm text-white">
                             {recipient.address.slice(0, 20)}...
