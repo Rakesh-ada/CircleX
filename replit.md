@@ -117,6 +117,21 @@ Changelog:
   • Enhanced recipient status badges with animated icons and timestamps
   • Connection status indicators with visual feedback
   • All components now update their own states independently
+- July 03, 2025: Complete glassmorphic UI transformation:
+  • Modern glassmorphic design with backdrop blur effects
+  • Gradient backgrounds with floating animations
+  • Updated app branding to "TokenBridge" with clean geometric logo
+  • Glassmorphic cards, buttons, and input components
+  • Enhanced visual hierarchy with proper spacing and typography
+  • Shimmer effects and smooth hover transitions
+- July 03, 2025: Enhanced bulk transfer functionality with true multi-recipient support:
+  • Optimized same-chain batch transfers in single transaction
+  • Cross-chain recipients grouped by destination chain for efficient processing
+  • Parallel processing with intelligent batching (5 recipients for fast, 3 for standard)
+  • Staggered transaction execution to avoid nonce conflicts
+  • Comprehensive error handling with graceful user cancellation support
+  • Enhanced logging and progress tracking for all transfer operations
+  • Gas estimation and optimization for batch operations
 ```
 
 ## User Preferences
