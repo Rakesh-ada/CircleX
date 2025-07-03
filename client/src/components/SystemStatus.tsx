@@ -1,4 +1,4 @@
-import { Card, CardContent, CardTitle, CardHeader } from '@/components/ui/card';
+import { Card, CardTitle, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useAppStore } from '@/store/useAppStore';
 import { useWallet } from '@/hooks/useWallet';
@@ -115,7 +115,7 @@ export default function SystemStatus() {
 
   return (
     <Card className="bg-slate-800 border-slate-700">
-      <CardContent className="p-6">
+      <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <CardTitle className="text-lg font-semibold text-white flex items-center space-x-2">
             <Database className="w-5 h-5" />
@@ -182,7 +182,7 @@ export default function SystemStatus() {
             </div>
           </div>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 }
