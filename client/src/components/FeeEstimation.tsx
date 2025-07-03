@@ -1,6 +1,6 @@
 import { useAppStore } from '@/store/useAppStore';
 import { useFeeEstimation } from '@/hooks/useFeeEstimation';
-import { Zap } from 'lucide-react';
+import { DollarSign } from 'lucide-react';
 
 export default function FeeEstimation() {
   const { feeEstimation, recipients } = useAppStore();
@@ -12,7 +12,7 @@ export default function FeeEstimation() {
     <div className="p-6 h-full">
       <div className="mb-6">
         <h2 className="text-xl font-bold text-gradient mb-2 flex items-center space-x-2">
-          <Zap className="w-5 h-5" />
+          <DollarSign className="w-5 h-5" />
           <span>Fee Estimation</span>
         </h2>
         <p className="text-slate-400 text-sm">Estimated costs for your transfers</p>
