@@ -35,7 +35,7 @@ export default function PaymentSummary() {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-gradient mb-2">Transfer Summary</h2>
+        <h2 className="text-lg font-bold text-gradient mb-2">Transfer Summary</h2>
         <p className="text-slate-400 text-sm">Review your transfer details</p>
       </div>
 
@@ -48,8 +48,8 @@ export default function PaymentSummary() {
                 <Users className="w-5 h-5 text-blue-400" />
               </div>
               <div>
-                <p className="text-slate-400 text-sm">Recipients</p>
-                <p className="text-white font-bold text-lg">{recipients.length}</p>
+                <p className="text-slate-400 text-xs">Recipients</p>
+                <p className="text-white font-bold text-base">{recipients.length}</p>
               </div>
             </div>
           </div>
@@ -60,8 +60,8 @@ export default function PaymentSummary() {
                 <DollarSign className="w-5 h-5 text-green-400" />
               </div>
               <div>
-                <p className="text-slate-400 text-sm">Total</p>
-                <p className="text-white font-bold text-lg">{totalAmount.toFixed(2)} USDC</p>
+                <p className="text-slate-400 text-xs">Total</p>
+                <p className="text-white font-bold text-base">{totalAmount.toFixed(2)} USDC</p>
               </div>
             </div>
           </div>
@@ -72,16 +72,16 @@ export default function PaymentSummary() {
           <div className="glass-input rounded-xl p-4">
             <div className="flex items-center space-x-2 mb-4">
               <TrendingUp className="w-4 h-4 text-slate-400" />
-              <h3 className="font-semibold text-white">Chain Breakdown</h3>
+              <h3 className="font-medium text-sm text-white">Chain Breakdown</h3>
             </div>
             <div className="space-y-3">
               {chainBreakdown.map((item) => (
                 <div key={item.chainId} className="flex justify-between items-center">
                   <div className="flex items-center space-x-3">
                     <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${getChainColor(item.chainName)}`}></div>
-                    <span className="text-slate-300 text-sm font-medium">{item.chainName}</span>
+                    <span className="text-slate-300 text-xs font-medium">{item.chainName}</span>
                   </div>
-                  <span className="text-white font-semibold">{item.amount.toFixed(2)} USDC</span>
+                  <span className="text-white font-medium text-xs">{item.amount.toFixed(2)} USDC</span>
                 </div>
               ))}
             </div>
