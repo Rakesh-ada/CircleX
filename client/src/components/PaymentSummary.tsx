@@ -61,7 +61,7 @@ export default function PaymentSummary() {
               </div>
               <div>
                 <p className="text-slate-400 text-xs">Total</p>
-                <p className="text-white font-bold text-base">{totalAmount.toFixed(2)} USDC</p>
+                <p className="text-white font-bold text-base">{totalAmount.toFixed(2)}</p>
               </div>
             </div>
           </div>
