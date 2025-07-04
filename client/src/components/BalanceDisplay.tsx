@@ -32,9 +32,7 @@ export default function BalanceDisplay() {
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-xl font-bold text-gradient">Wallet Balance</h2>
           <div className="flex items-center space-x-2">
-            {autoRefresh && (
-              <div className="w-2 h-2 bg-emerald-400 rounded-full glow-pulse" title="Auto-refresh enabled"></div>
-            )}
+            
             <Button
               variant="ghost"
               size="sm"
