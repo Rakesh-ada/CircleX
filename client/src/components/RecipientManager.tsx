@@ -512,7 +512,7 @@ export default function RecipientManager() {
                         {recipient.address.slice(0, 20)}...
                       </div>
                     </td>
-                    <td className="p-4 text-center">
+                    <td className="p-4 text-left">
                       <div className="flex flex-col">
                         <span className="text-sm text-white">{recipient.chainName}</span>
                         {recipient.isSameChain ? (
