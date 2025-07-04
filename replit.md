@@ -165,15 +165,6 @@ Changelog:
   • Implemented tooltip titles for all icon-only buttons for accessibility
   • Shortened header tagline on mobile screens for better space utilization
   • Fixed BigInt literal compatibility issue for broader browser support
-- July 04, 2025: LiFi SDK and Circle CCTP V2 integration:
-  • Integrated @lifi/sdk for enhanced cross-chain transfer capabilities
-  • Added LiFiTransferMethodSelector component with Circle CCTP V2 route discovery
-  • Implemented smart route optimization prioritizing CCTP for fast transfers
-  • Enhanced transfer method selection with real-time route analysis
-  • Added support for native USDC burn/mint transfers through Circle's protocol
-  • Integrated fast transfer capabilities (8-20 seconds vs 13-19 minutes)
-  • Created comprehensive LiFi service layer with status monitoring
-  • Added visual indicators for CCTP V1/V2 availability and route optimization
 ```
 
 ## User Preferences

@@ -1,6 +1,6 @@
 
 import WalletConnect from '@/components/WalletConnect';
-import LiFiTransferMethodSelector from '@/components/LiFiTransferMethodSelector';
+import TransferMethodSelector from '@/components/TransferMethodSelector';
 import RecipientManager from '@/components/RecipientManager';
 import TransactionStatus from '@/components/TransactionStatus';
 import PaymentSummary from '@/components/PaymentSummary';
@@ -86,15 +86,7 @@ export default function TeamPay() {
           <div className="lg:col-span-2 space-y-6">
             {/* Transfer Method Selector */}
             <div className="glass-card rounded-xl shimmer">
-              <LiFiTransferMethodSelector 
-                onMethodSelect={(method, route) => {
-                  console.log('Selected method:', method, route);
-                  // Handle method selection logic here
-                }}
-                fromChainId={wallet.chainId || undefined}
-                toChainId={recipients.length > 0 ? recipients[0].chainId : undefined}
-                amount={recipients.length > 0 ? recipients[0].amount : undefined}
-              />
+              <TransferMethodSelector />
             </div>
 
             {/* Recipient Manager */}
