@@ -1,8 +1,13 @@
 import { useAppStore } from '@/store/useAppStore';
-import { Users, DollarSign, TrendingUp } from 'lucide-react';
+import { Users, DollarSign, TrendingUp, Send, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { usePaymentExecution } from '@/hooks/usePaymentExecution';
 
 export default function PaymentSummary() {
-  const { recipients } = useAppStore();
+  const { recipients, wallet, selectedTransferMethod } = useAppStore();
+  const { executePayment, isExecuting, executionProgress } = usePaymentExecution();
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const totalAmount = recipients.reduce((sum, r) => sum + parseFloat(r.amount || '0'), 0);
   
@@ -84,6 +89,74 @@ export default function PaymentSummary() {
                   <span className="text-white font-medium text-xs">{item.amount.toFixed(2)} USDC</span>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+        
+        {/* Payment Execution Section */}
+        {recipients.length > 0 && wallet.isConnected && (
+          <div className="mt-6 space-y-4">
+            {/* Execution Progress */}
+            {executionProgress && (
+              <div className="glass-input rounded-xl p-4">
+                <div className="flex items-center space-x-3 mb-3">
+                  <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm font-medium text-white">
+                    {executionProgress.stage === 'completed' ? 'Completed' : 'Processing...'}
+                  </span>
+                </div>
+                <p className="text-sm text-slate-400 mb-2">{executionProgress.message}</p>
+                <div className="flex justify-between text-xs text-slate-500">
+                  <span>Progress: {executionProgress.completedRecipients}/{executionProgress.totalRecipients}</span>
+                  {executionProgress.txHash && (
+                    <span>TX: {executionProgress.txHash.slice(0, 10)}...</span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Payment Action Button */}
+            <Button
+              onClick={executePayment}
+              disabled={isExecuting || recipients.length === 0}
+              className="w-full glass-button bg-emerald-600/20 hover:bg-emerald-600/30 border-emerald-500/30 text-emerald-400 hover:text-emerald-300 transition-all duration-300"
+            >
+              {isExecuting ? (
+                <>
+                  <div className="w-4 h-4 mr-2 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4 mr-2" />
+                  Execute {selectedTransferMethod === 'fast' ? 'Fast' : selectedTransferMethod === 'standard' ? 'Standard' : 'Same-Chain'} Transfer
+                </>
+              )}
+            </Button>
+
+            {/* Transfer Method Info */}
+            <div className="glass-input rounded-xl p-3">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-slate-400">Method:</span>
+                <span className="text-white font-medium">
+                  {selectedTransferMethod === 'fast' ? 'Fast Cross-Chain (~30s)' : 
+                   selectedTransferMethod === 'standard' ? 'Standard Cross-Chain (~15min)' : 
+                   'Same-Chain Transfer (~30s)'}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Connection Warning */}
+        {recipients.length > 0 && !wallet.isConnected && (
+          <div className="mt-6 glass-input rounded-xl p-4 border-orange-500/30">
+            <div className="flex items-center space-x-3">
+              <AlertCircle className="w-5 h-5 text-orange-400" />
+              <div>
+                <p className="text-orange-400 font-medium text-sm">Wallet Not Connected</p>
+                <p className="text-slate-400 text-xs">Please connect your wallet to execute transfers.</p>
+              </div>
             </div>
           </div>
         )}
