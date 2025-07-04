@@ -386,13 +386,13 @@ export default function RecipientManager() {
               onClick={() => fileInputRef.current?.click()}
               disabled={isImporting}
               className="glass-button text-white font-medium"
+              title="Import CSV"
             >
               {isImporting ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
-                <Upload className="w-4 h-4 mr-2" />
+                <Upload className="w-4 h-4" />
               )}
-              Import
             </Button>
             
             <Button
@@ -401,9 +401,9 @@ export default function RecipientManager() {
               onClick={handleCSVExport}
               disabled={recipients.length === 0}
               className="glass-button text-white font-medium"
+              title="Export CSV"
             >
-              <Download className="w-4 h-4 mr-2" />
-              Export
+              <Download className="w-4 h-4" />
             </Button>
 
             {recipients.length > 0 && (
@@ -412,9 +412,9 @@ export default function RecipientManager() {
                 size="sm"
                 onClick={clearRecipients}
                 className="glass-button text-red-400 font-medium hover:text-red-300"
+                title="Delete All"
               >
-                <Trash2 className="w-4 h-4 mr-2" />
-                Delete All
+                <Trash2 className="w-4 h-4" />
               </Button>
             )}
 
@@ -424,9 +424,9 @@ export default function RecipientManager() {
                   size="sm"
                   className="glass-button text-white font-medium bg-cyan-400/20 hover:bg-cyan-400/30"
                   onClick={handleOpenDialog}
+                  title="Add Recipient"
                 >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Recipient
+                  <Plus className="w-4 h-4" />
                 </Button>
               </DialogTrigger>
               <DialogContent className="glass-card border-slate-600/50">

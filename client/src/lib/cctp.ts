@@ -477,7 +477,7 @@ export class CCTPService {
         
         // Estimate network fees in USD
         // Typical transfer uses ~21,000 gas for USDC transfer
-        const estimatedGasUsed = 21000n * BigInt(recipients.length);
+        const estimatedGasUsed = BigInt(21000) * BigInt(recipients.length);
         const totalGasCost = gasPrice * estimatedGasUsed;
         
         // Convert to USD (rough estimate: 1 ETH = $2000, 1 gwei = 1e-9 ETH)

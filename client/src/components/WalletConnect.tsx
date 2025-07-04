@@ -59,25 +59,27 @@ export default function WalletConnect() {
           variant="outline"
           onClick={handleDisconnect}
           className="glass-button text-white border-blue-400/30 hover:border-blue-400/50 px-4 py-2 rounded-lg backdrop-blur-sm"
+          title={`Disconnect ${shortAddress}`}
         >
-          <Wallet className="w-4 h-4 mr-2" />
-          {shortAddress}
+          <Wallet className="w-4 h-4 md:mr-2" />
+          <span className="hidden md:inline">{shortAddress}</span>
         </Button>
       ) : (
         <Button
           onClick={handleConnect}
           disabled={connectionStatus === 'connecting'}
           className="glass-button text-white px-6 py-2 rounded-lg backdrop-blur-sm disabled:opacity-50 glow-border"
+          title={connectionStatus === 'connecting' ? 'Connecting...' : 'Connect Wallet'}
         >
           {connectionStatus === 'connecting' ? (
             <>
-              <div className="w-4 h-4 mr-2 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-              Connecting...
+              <div className="w-4 h-4 md:mr-2 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              <span className="hidden md:inline">Connecting...</span>
             </>
           ) : (
             <>
-              <Wallet className="w-4 h-4 mr-2" />
-              Connect Wallet
+              <Wallet className="w-4 h-4 md:mr-2" />
+              <span className="hidden md:inline">Connect Wallet</span>
             </>
           )}
         </Button>

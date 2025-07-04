@@ -159,6 +159,12 @@ Changelog:
   • Improved font size alignment in PaymentSummary component for better visual hierarchy
   • Replaced brush icon with dust bin (Trash2) icon for delete buttons in RecipientManager
   • Enhanced CSV functionality to automatically generate transaction links for completed transfers
+- July 04, 2025: Mobile-responsive UI improvements:
+  • Converted all action buttons to icon-only format for mobile devices
+  • Added responsive visibility for wallet address and connection status text
+  • Implemented tooltip titles for all icon-only buttons for accessibility
+  • Shortened header tagline on mobile screens for better space utilization
+  • Fixed BigInt literal compatibility issue for broader browser support
 ```
 
 ## User Preferences

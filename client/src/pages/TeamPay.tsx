@@ -56,7 +56,8 @@ export default function TeamPay() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gradient">CircleX</h1>
-                <p className="text-slate-400 text-sm">Cross-Chain Payment Management </p>
+                <p className="text-slate-400 text-sm hidden sm:block">Cross-Chain Payment Management</p>
+                <p className="text-slate-400 text-sm sm:hidden">Cross-Chain Payments</p>
               </div>
             </div>
             <WalletConnect />
