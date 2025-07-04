@@ -21,6 +21,11 @@ export default function TransferMethodSelector() {
 
   return (
     <div className="p-6">
+      <div className="mb-6">
+        <h2 className="text-xl font-bold text-gradient mb-2">Bridge Method</h2>
+        <p className="text-slate-400 text-sm">Choose your preferred transfer method</p>
+      </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {TRANSFER_METHODS.map((method) => (
           <div
