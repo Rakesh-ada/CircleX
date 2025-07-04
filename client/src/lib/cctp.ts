@@ -46,6 +46,11 @@ interface BurnFeesResponse {
   }>;
 }
 
+interface CircleBurnFeesResponse {
+  finalityThreshold: number;
+  minimumFee: number;
+}
+
 export class CCTPService {
   private provider: BrowserProvider;
   private signer: ethers.Signer;
@@ -418,8 +423,17 @@ export class CCTPService {
         throw new Error(`Burn fees API request failed: ${response.status} ${response.statusText}`);
       }
 
-      const data: BurnFeesResponse = await response.json();
-      return data;
+      const circleData: CircleBurnFeesResponse[] = await response.json();
+      
+      // Transform Circle's response format to our expected format
+      const transformedFees: BurnFeesResponse = {
+        fees: circleData.map((item, index) => ({
+          feeType: item.finalityThreshold >= 2000 ? 'standard' : 'fast',
+          fee: (item.minimumFee / 1000000).toFixed(2) // Convert from micro-USDC to USDC
+        }))
+      };
+
+      return transformedFees;
     } catch (error) {
       console.error('Failed to get burn fees:', error);
       throw error;
@@ -456,13 +470,19 @@ export class CCTPService {
   }> {
     try {
       // Check if provider is still valid before making calls
-      let networkFeesGwei = '20'; // Default fallback
+      let networkFeesUSD = 5; // Default fallback in USD
       try {
         const feeData = await this.provider.getFeeData();
         const gasPrice = feeData.gasPrice || parseUnits('20', 'gwei');
         
-        // Convert gas price to Gwei for display
-        networkFeesGwei = formatUnits(gasPrice, 'gwei');
+        // Estimate network fees in USD
+        // Typical transfer uses ~21,000 gas for USDC transfer
+        const estimatedGasUsed = 21000n * BigInt(recipients.length);
+        const totalGasCost = gasPrice * estimatedGasUsed;
+        
+        // Convert to USD (rough estimate: 1 ETH = $2000, 1 gwei = 1e-9 ETH)
+        const ethCost = Number(formatUnits(totalGasCost, 'ether'));
+        networkFeesUSD = ethCost * 2000; // Rough ETH price estimate
       } catch (networkError: any) {
         // Handle network change errors gracefully
         if (networkError.code === 'NETWORK_ERROR' || networkError.event === 'changed') {
