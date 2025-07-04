@@ -54,9 +54,7 @@ export default function TransferMethodSelector() {
             )}>
               {method.name}
             </h3>
-            <p className="text-sm text-slate-400 leading-relaxed">
-              {method.description}
-            </p>
+
           </div>
 
           {/* Time and fee */}
