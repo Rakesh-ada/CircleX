@@ -1,0 +1,117 @@
+🧰 Step 1: Understand CCTP V2
+
+* **Fast Transfers** settle USDC across chains in **seconds**, not waiting for finality ([circle.com][1]).
+* **Hooks** allow you to execute arbitrary on‑destination-chain logic atomically (e.g., swap, deposit) .
+* CCTP V2 is available on **Ethereum**, **Avalanche**, **Base**, and soon more chains ([circle.com][1]).
+
+👉 Core flow:
+
+1. **Burn** native USDC on source chain.
+2. **Circle attests** the burn and issues a signed message.
+3. **Mint** USDC (and optionally run Hooks) on destination chain ([li.fi][2], [lifi.substack.com][3]).
+
+---
+
+## 📘 Step 2: Prepare Your Environment
+
+* Visit **Circle’s CCTP V2 docs and white paper** on Circle’s site ([circle.com][1]).
+* Explore **LI.FI SDK docs** (API, SDK, Widget, code examples) ([li.fi][4]).
+* Examples: DappRadar, SafePal, Blockchain.com have implemented LI.FI + Circle CCTP ([li.fi][5]).
+
+---
+
+## 🔧 Step 3: Install LI.FI SDK
+
+```bash
+npm install @lifi/sdk
+```
+
+Or use the **Widget** for no-code:
+Check docs.li.fi → Widget → Quickstart ([coindesk.com][6], [docs.li.fi][7]).
+
+---
+
+## 🧠 Step 4: Initialize for CCTP V2
+
+Use LI.FI’s route finder to include CCTP V2 in your path options:
+
+```js
+import { LiFi } from '@lifi/sdk';
+const lifi = new LiFi();
+
+const route = await lifi.getRoutes({
+  fromChainId: 1,         // Ethereum
+  toChainId: 43114,       // Avalanche
+  fromToken: 'USDC',
+  toToken: 'USDC',
+  fromAmount: '1000000',  // 1 USDC
+  allowBridges: ['cctp-v2'],
+});
+```
+
+(Use actual chain‑ID mapping from the SDK)
+
+---
+
+## 🧪 Step 5: Execute the Swap & CCTP Flow
+
+Example:
+
+```js
+const route = /* route from above */;
+await lifi.executeRoute(route);
+```
+
+This handles the entire lifecycle: burn → attestation → mint + optional Hook.
+
+To add a **Hook** (e.g., auto-swap or deposit):
+
+```js
+const hook = {
+  // contract on dest chain, e.g., DEX or lending pool
+  targetAddress: '0xYourContract',
+  data: '0x...',           // ABI-encoded function call
+  value: '0',
+};
+await lifi.executeRoute({ ...route, hook });
+```
+
+This ensures the Hook runs atomically with USDC mint ([circle.com][1], [coindesk.com][6]).
+
+---
+
+## 🧩 Step 6: Handle Attestation and Gas
+
+* For **Fast Transfers**, LI.FI automatically requests attestation from Circle—no wait-for-finality needed ([circle.com][8]).
+* Ensure user pays both source-chain and destination-chain gas; optionally batch or cover it via your app.
+
+---
+
+## ✅ Step 7: Error Handling & Fallbacks
+
+* LI.FI SDK supports multi-bridge fallback: if CCTP V2 isn’t available or fails, it will automatically fallback to another bridge like Stargate or Across ([circle.com][8]).
+* Implement UI notifications for users when CCTP route isn't available.
+
+---
+
+## 🎯 Step 8: Testing & Deployment
+
+* Use **testnets** supported by both Circle and LI.FI (check SDK docs).
+* Simulate real flows: burn, attestation, mint, and optional Hooks.
+* Verify atomicity—assert Hooks are executed only on successful USDC mint.
+
+---
+
+## 💡 Step 9: Monitor & Optimize
+
+* Track LI.FI and Circle logs.
+* Tune gas estimation, and UI prompts for fast vs. standard route options.
+* Optionally enable both: let users pick “Fast” or “Standard” transfer speeds.
+
+---
+
+### 🔗 Resources
+
+* **Circle CCTP V2** overview & deep dive ([li.fi][9], [sg.finance.yahoo.com][10])
+* **LI.FI SDK/Widget docs & quickstarts** ([li.fi][4])
+* **Real-world implementations**: DappRadar, SafePal, Blockchain.com ([li.fi][5])
