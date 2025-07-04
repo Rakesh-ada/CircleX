@@ -38,10 +38,7 @@ export default function TransferMethodSelector() {
             )}
             onClick={() => setTransferMethod(method.type)}
           >
-            {/* Selection indicator */}
-            {selectedTransferMethod === method.type && (
-              <div className="absolute top-3 right-3 w-3 h-3 bg-blue-500 rounded-full glow-pulse"></div>
-            )}
+
             
             {/* Icon */}
             <div className={cn(
