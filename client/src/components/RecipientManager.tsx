@@ -367,7 +367,6 @@ export default function RecipientManager() {
         onChange={handleCSVImport}
         className="hidden"
       />
-
       <div className="glass-card rounded-xl shimmer p-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 mb-6">
           <div className="flex items-center space-x-3">
@@ -523,7 +522,7 @@ export default function RecipientManager() {
                         )}
                       </div>
                     </td>
-                    <td className="p-4">
+                    <td className="p-4 text-center">
                       <span className="font-semibold text-white">{recipient.amount}</span>
                     </td>
                     <td className="p-4">
