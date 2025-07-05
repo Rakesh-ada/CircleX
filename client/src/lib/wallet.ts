@@ -77,6 +77,17 @@ export class WalletService {
       if (error.code === 4902) {
         // Network not added to MetaMask, try to add it
         await this.addNetwork(chainId);
+        // After adding, try switching again
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: `0x${chainId.toString(16)}` }]
+        });
+      } else if (error.code === 4001) {
+        // User rejected the request
+        throw new Error('User rejected the network switch request');
+      } else if (error.code === -32002) {
+        // Request already pending
+        throw new Error('Network switch request already pending. Please check MetaMask.');
       } else {
         throw error;
       }

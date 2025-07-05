@@ -50,7 +50,9 @@ export default function WalletConnect() {
       console.error('Failed to switch network:', error);
       // Show user-friendly error message
       if (error.message.includes('User rejected')) {
-        console.log('User cancelled network switch');
+        console.log('Network switch cancelled by user');
+      } else if (error.message.includes('already pending')) {
+        console.log('Network switch request already pending. Please check MetaMask.');
       } else if (error.message.includes('Chain not supported')) {
         console.log('This network is not supported');
       } else {

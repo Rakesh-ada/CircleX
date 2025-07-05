@@ -165,6 +165,14 @@ Changelog:
   • Implemented tooltip titles for all icon-only buttons for accessibility
   • Shortened header tagline on mobile screens for better space utilization
   • Fixed BigInt literal compatibility issue for broader browser support
+- July 05, 2025: Enhanced network switching with dropdown functionality:
+  • Added interactive dropdown button to change blockchain networks
+  • Implemented automatic network addition when chain not in MetaMask
+  • Updated RPC URLs to use public endpoints instead of placeholder URLs
+  • Added proper native currency settings for different networks (MATIC, AVAX, ETH)
+  • Filtered dropdown to show only commonly available networks
+  • Enhanced error handling for user-friendly feedback
+  • Added prevention of duplicate network addition requests
 ```
 
 ## User Preferences
