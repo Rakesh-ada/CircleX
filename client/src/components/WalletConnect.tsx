@@ -1,9 +1,16 @@
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useWallet } from '@/hooks/useWallet';
 import { useAppStore } from '@/store/useAppStore';
 import { SUPPORTED_CHAINS, TESTNET_CHAINS } from '@/lib/constants';
-import { Wallet, Wifi, WifiOff } from 'lucide-react';
+import { Wallet, Wifi, WifiOff, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { walletService } from '@/lib/wallet';
 
 export default function WalletConnect() {
   const { isConnected, address, chainId, connectWallet, disconnectWallet } = useWallet();
@@ -35,6 +42,15 @@ export default function WalletConnect() {
     setConnectionStatus('disconnected');
   };
 
+  const handleSwitchNetwork = async (chainId: number) => {
+    try {
+      await walletService.switchNetwork(chainId);
+      // The wallet hook will automatically update the chain state
+    } catch (error) {
+      console.error('Failed to switch network:', error);
+    }
+  };
+
   const shortAddress = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : '';
 
   // Get current network info
@@ -45,13 +61,42 @@ export default function WalletConnect() {
 
   return (
     <div className="flex items-center space-x-3">
-      {/* Network Indicator */}
-      <div className="glass-input rounded-lg px-4 py-2 border border-white/10">
-        <div className="flex items-center space-x-2">
-          <div className={`w-2 h-2 rounded-full ${isValidChain ? 'bg-emerald-400 glow-pulse' : 'bg-red-400'}`}></div>
-          <span className="text-sm text-slate-300 font-medium">{networkName}</span>
-        </div>
-      </div>
+      {/* Network Selector */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            className="glass-input rounded-lg px-4 py-2 border border-white/10 hover:border-white/20 transition-colors"
+            disabled={!isConnected}
+          >
+            <div className="flex items-center space-x-2">
+              <div className={`w-2 h-2 rounded-full ${isValidChain ? 'bg-emerald-400 glow-pulse' : 'bg-red-400'}`}></div>
+              <span className="text-sm text-slate-300 font-medium">{networkName}</span>
+              <ChevronDown className="w-4 h-4 text-slate-400" />
+            </div>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="glass-card border-white/10 bg-slate-900/90 backdrop-blur-sm">
+          {supportedChains.map((chain) => (
+            <DropdownMenuItem
+              key={chain.id}
+              onClick={() => handleSwitchNetwork(chain.id)}
+              className="cursor-pointer hover:bg-white/5 text-slate-300 hover:text-white transition-colors"
+            >
+              <div className="flex items-center space-x-2">
+                <div 
+                  className="w-2 h-2 rounded-full" 
+                  style={{ backgroundColor: chain.color }}
+                ></div>
+                <span>{chain.name}</span>
+                {chainId === chain.id && (
+                  <div className="w-2 h-2 rounded-full bg-emerald-400 ml-auto"></div>
+                )}
+              </div>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       {/* Wallet Connection */}
       {isConnected ? (
