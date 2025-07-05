@@ -46,8 +46,16 @@ export default function WalletConnect() {
     try {
       await walletService.switchNetwork(chainId);
       // The wallet hook will automatically update the chain state
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to switch network:', error);
+      // Show user-friendly error message
+      if (error.message.includes('User rejected')) {
+        console.log('User cancelled network switch');
+      } else if (error.message.includes('Chain not supported')) {
+        console.log('This network is not supported');
+      } else {
+        console.log('Failed to switch network. Please try again.');
+      }
     }
   };
 
@@ -58,6 +66,18 @@ export default function WalletConnect() {
   const currentChain = chainId ? supportedChains.find(chain => chain.id === chainId) : null;
   const networkName = currentChain?.name || (isConnected ? 'Unknown Network' : 'None');
   const isValidChain = currentChain !== null;
+
+  // Filter to show only commonly available networks or add option to add new ones
+  const availableChains = supportedChains.filter(chain => {
+    // For mainnet, show common chains that are typically available
+    if (!isTestnet) {
+      const commonMainnetChains = [1, 137, 42161, 8453, 10, 43114]; // Ethereum, Polygon, Arbitrum, Base, Optimism, Avalanche
+      return commonMainnetChains.includes(chain.id);
+    }
+    // For testnet, show common testnet chains
+    const commonTestnetChains = [11155111, 80002, 421614, 84532, 11155420, 43113]; // Sepolia, Polygon Amoy, Arbitrum Sepolia, Base Sepolia, OP Sepolia, Avalanche Fuji
+    return commonTestnetChains.includes(chain.id);
+  });
 
   return (
     <div className="flex items-center space-x-3">
@@ -77,7 +97,7 @@ export default function WalletConnect() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="glass-card border-white/10 bg-slate-900/90 backdrop-blur-sm">
-          {supportedChains.map((chain) => (
+          {availableChains.map((chain) => (
             <DropdownMenuItem
               key={chain.id}
               onClick={() => handleSwitchNetwork(chain.id)}

@@ -75,9 +75,85 @@ export class WalletService {
       });
     } catch (error: any) {
       if (error.code === 4902) {
-        throw new Error('Network not added to MetaMask');
+        // Network not added to MetaMask, try to add it
+        await this.addNetwork(chainId);
+      } else {
+        throw error;
       }
-      throw error;
+    }
+  }
+
+  async addNetwork(chainId: number) {
+    if (!window.ethereum) {
+      throw new Error('MetaMask is not installed');
+    }
+
+    // Find the chain configuration
+    const allChains = [...SUPPORTED_CHAINS, ...TESTNET_CHAINS];
+    const chain = allChains.find(c => c.id === chainId);
+    
+    if (!chain) {
+      throw new Error('Chain not supported');
+    }
+
+    try {
+      // Set appropriate native currency based on chain
+      let nativeCurrency = {
+        name: 'ETH',
+        symbol: 'ETH',
+        decimals: 18
+      };
+
+      // Special cases for chains with different native tokens
+      if (chainId === 137 || chainId === 80002) { // Polygon
+        nativeCurrency = {
+          name: 'MATIC',
+          symbol: 'MATIC',
+          decimals: 18
+        };
+      } else if (chainId === 43114 || chainId === 43113) { // Avalanche
+        nativeCurrency = {
+          name: 'AVAX',
+          symbol: 'AVAX',
+          decimals: 18
+        };
+      }
+
+      await window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [{
+          chainId: `0x${chainId.toString(16)}`,
+          chainName: chain.name,
+          nativeCurrency,
+          rpcUrls: [chain.rpcUrl],
+          blockExplorerUrls: [chain.blockExplorer]
+        }]
+      });
+    } catch (error) {
+      console.error('Failed to add network:', error);
+      throw new Error('Failed to add network to MetaMask');
+    }
+  }
+
+  async getAvailableNetworks(): Promise<number[]> {
+    if (!window.ethereum) {
+      return [];
+    }
+
+    try {
+      // Get all available chains from MetaMask
+      const chainIds = await window.ethereum.request({
+        method: 'wallet_getPermissions'
+      });
+      
+      // For now, we'll return the common chains that are typically available
+      // This is a simplified approach - in a real app you might want to check each one
+      const commonChains = [1, 137, 42161, 8453, 10, 43114]; // Ethereum, Polygon, Arbitrum, Base, Optimism, Avalanche
+      return commonChains;
+    } catch (error) {
+      console.error('Failed to get available networks:', error);
+      // Return common mainnet chains as fallback
+      return [1, 137, 42161, 8453, 10, 43114];
     }
   }
 
