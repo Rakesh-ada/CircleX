@@ -17,9 +17,8 @@ export default function FeeEstimation() {
         </h2>
         <p className="text-slate-400 text-sm">Estimated costs for your transfers</p>
       </div>
-
       {!feeEstimation || recipients.length === 0 ? (
-        <div className="text-center text-slate-400 py-8">
+        <div className="text-center text-slate-400 py-8 pt-[32px] pb-[32px]">
           <p className="text-sm">Add recipients to see fee estimation</p>
         </div>
       ) : (
