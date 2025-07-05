@@ -1,4 +1,5 @@
 import { useAppStore } from '@/store/useAppStore';
+import { Calculator } from 'lucide-react';
 import { useFeeEstimation } from '@/hooks/useFeeEstimation';
 import { DollarSign } from 'lucide-react';
 
@@ -19,6 +20,7 @@ export default function FeeEstimation() {
       </div>
       {!feeEstimation || recipients.length === 0 ? (
         <div className="text-center text-slate-400 py-8 pt-[32px] pb-[32px]">
+          <Calculator className="w-12 h-12 mx-auto mb-3 text-slate-500" />
           <p className="text-sm">Add recipients to see fee estimation</p>
         </div>
       ) : (
